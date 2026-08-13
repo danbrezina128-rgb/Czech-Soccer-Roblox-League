@@ -1,0 +1,20 @@
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('add-money')
+        .setDescription('Přidá peníze do rozpočtu týmu. (Management Only)')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+        .addStringOption(o => o.setName('team').setDescription('Název týmu').setRequired(true))
+        .addIntegerOption(o => o.setName('amount').setDescription('Částka').setRequired(true))
+        .addStringOption(o => o.setName('reason').setDescription('Důvod').setRequired(true)),
+    async execute(interaction) {
+        const team = interaction.options.getString('team');
+        const amount = interaction.options.getInteger('amount');
+        const reason = interaction.options.getString('reason');
+
+        await interaction.reply({
+            content: `💰 Týmu **${team}** bylo přidáno **$${amount.toLocaleString()}**.\nDůvod: *${reason}*`
+        });
+    },
+};
